@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 def roman_to_int(roman_string):
-    if not isinstance(roman_string, str) or roman_string == None:
+    if not isinstance(roman_string, str) or roman_string is None:
         return 0
     ret = 0
     two = {'CM': 800, 'CD': 400, 'XC': 90, 'XL': 40, 'IX': 9, 'IV': 4}
