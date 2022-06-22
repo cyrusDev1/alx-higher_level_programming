@@ -60,7 +60,6 @@ class Square:
             for i in range(self.__size):
                 print("#", end="")
             print()
-    
 
     def __str__(self):
         """Str method for print from main module."""
