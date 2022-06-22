@@ -25,7 +25,6 @@ class Node:
             raise TypeError("data must be an integer")
         self.__data = data
 
-    
     @property
     def next_node(self):
         """Return or set the next_node of the Node."""
@@ -36,7 +35,6 @@ class Node:
         if value is not None and not isinstance(value, Node):
             raise TypeError("next_node must be a Node object")
         self.__next_node = value
-
 
 
 class SinglyLinkedList:
@@ -68,7 +66,7 @@ class SinglyLinkedList:
         if self.__head is None:
             self.__head = new
             return
-        
+
         if value < self.__head.data:
             new.next_node = self.__head
             self.__head = new
