@@ -39,15 +39,15 @@ class Square:
     def __eq__(self, other):
         """Equal : =="""
         return self.area() == other.area()
-    
+
     def __ne__(self, other):
         """Not equal : !="""
         return self.area() != other.area()
-    
+
     def __lt__(self, other):
         """less than : <"""
         return self.area() < other.area()
-    
+
     def __le_(self, other):
         """less than or equal: <="""
         return self.area() <= other.area()
