@@ -97,9 +97,7 @@ class Rectangle():
         Args:
             size (int): The width and height of the new Rectangle.
         """
-        width = size
-        height = size
-        return Rectangle(width, height)
+        return cls(size, size)
 
     def __del__(self):
         """Print the message Bye rectangle... (... being 3 dots not ellipsis)
