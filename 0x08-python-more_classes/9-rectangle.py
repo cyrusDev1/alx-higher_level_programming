@@ -73,6 +73,7 @@ class Rectangle():
         return ('Rectangle(' + str(self.__width) + ', '
                 + str(self.__height) + ')')
 
+    @staticmethod
     def bigger_or_equal(rect_1, rect_2):
         """Return the Rectangle with the greater area.
         Args:
