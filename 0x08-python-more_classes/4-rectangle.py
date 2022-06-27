@@ -66,4 +66,5 @@ class Rectangle():
         """return a string representation of the rectangle to be able
         to recreate a new instance by using
         """
-        return ('Rectangle('+ str(self.__width) + ', ' + str(self.__height) +')')
+        return ('Rectangle(' + str(self.__width) + ', '
+                + str(self.__height) + ')')
