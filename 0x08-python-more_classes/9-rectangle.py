@@ -97,9 +97,9 @@ class Rectangle():
         Args:
             size (int): The width and height of the new Rectangle.
         """
-        if not isinstance(size, int):
-            raise TypeError("size must be an integer")
-        return Rectangle(size, size)
+        width = size
+        height = size
+        return Rectangle(width, height)
 
     def __del__(self):
         """Print the message Bye rectangle... (... being 3 dots not ellipsis)
