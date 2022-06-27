@@ -91,10 +91,11 @@ class Rectangle():
 
     @classmethod
     def square(cls, size=0):
-        cls.__width = size
-        cls.__height = size
-        return (eval('Rectangle(' + str(cls.__width) + ', '
-                + str(cls.__height) + ')'))
+        """Return a new Rectangle with width and height equal to size.
+        Args:
+            size (int): The width and height of the new Rectangle.
+        """
+        return (cls(size, size))
 
     def __del__(self):
         """Print the message Bye rectangle... (... being 3 dots not ellipsis)
