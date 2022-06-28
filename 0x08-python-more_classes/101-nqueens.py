@@ -4,6 +4,7 @@
 
 import sys
 
+
 def init_chessboard(n):
     """Initialize an n * n sized chessboard."""
     board = []
@@ -14,7 +15,15 @@ def init_chessboard(n):
             row.append(' ')
     return (board)
 
-def get_queens(baord):
+
+def copy_board(board):
+    """Return a copy of chessboard"""
+    if isinstance(board, list):
+        return list(map(copy_board, board))
+    return board
+
+
+def get_queens(board):
     """Return position of queens"""
     solution = []
     for r in range(len(board)):
@@ -24,11 +33,48 @@ def get_queens(baord):
                 break
     return (solution)
 
-def copy_board(board):
-    """Return a copy of chessboard"""
-    if isinstance(board, list):
-        return list(map(copy_board, board))
-    return (board)
+
+def redraw(board, row, col):
+    """Redraw a chessboard.
+
+    Args:
+        board (list): the current chessboard.
+        row (int): the row where a queen was last played.
+        col (int): the column where a queen was last played.
+    """
+    for c in range(col + 1, len(board)):
+        board[row][c] = "X"
+    for c in range(col - 1, -1, -1):
+        board[row][c] = "X"
+    for r in range(row + 1, len(board)):
+        board[r][col] = "X"
+    for r in range(row - 1, -1, -1):
+        board[r][col] = "X"
+    c = col + 1
+    for r in range(row + 1, len(board)):
+        if c >= len(board):
+            break
+        board[r][c] = "X"
+        c += 1
+    c = col - 1
+    for r in range(row - 1, -1, -1):
+        if c < 0:
+            break
+        board[r][c]
+        c -= 1
+    c = col + 1
+    for r in range(row - 1, -1, -1):
+        if c >= len(board):
+            break
+        board[r][c] = "X"
+        c += 1
+    c = col - 1
+    for r in range(row + 1, len(board)):
+        if c < 0:
+            break
+        board[r][c] = "X"
+        c -= 1
+
 
 def recursive(board, row, queens, solutions):
     """Solve an N-queens
@@ -45,9 +91,10 @@ def recursive(board, row, queens, solutions):
         return solutions
 
     for c in range(len(board)):
-        if board[row][c] == ' ':
+        if board[row][c] == " ":
             temp_board = copy_board(board)
             temp_board[row][c] = "Q"
+            redraw(temp_board, row, c)
             solutions = recursive(temp_board, row + 1, queens + 1, solutions)
     return solutions
 
@@ -65,5 +112,5 @@ if __name__ == "__main__":
 
     board = init_chessboard(int(sys.argv[1]))
     solutions = recursive(board, 0, 0, [])
-    for sol in solutions:
-        print(sol)
+    for i in solutions:
+        print(i)
