@@ -1,5 +1,9 @@
 #!/usr/bin/python3
+"""Defines function that print text indent"""
+
+
 def text_indentation(text):
+    """Print text with indentation"""
     if not isinstance(text, str):
         raise TypeError("text must be a string")
 
