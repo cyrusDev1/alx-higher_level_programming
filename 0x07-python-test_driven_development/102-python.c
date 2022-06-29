@@ -6,6 +6,7 @@ void print_python_string(PyObject *p)
 {
     const char *type = NULL;
     Py_ssize_t len = 0;
+    wchar_t *value = NULL;
 
     printf("[.] string object info\n");
     if (!PyUnicode_Check(p))
@@ -23,7 +24,8 @@ void print_python_string(PyObject *p)
         type = "compact unicode object";
     }
 
+    value = PyUnicode_AsWideCharString(p, &len);
     printf("  type: %s\n", type);
     printf("  length: %ld\n", len);
-    printf("  value: %ls\n", PyUnicode_AsWideCharString(p, &len));
+    printf("  value: %ls\n", value);
 }
