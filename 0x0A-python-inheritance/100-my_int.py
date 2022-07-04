@@ -1,6 +1,3 @@
-from distutils.command.clean import clean
-
-
 #!/usr/bin/python3
 """Defines class MyInt"""
 
