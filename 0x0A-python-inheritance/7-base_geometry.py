@@ -11,7 +11,7 @@ class BaseGeometry():
 
     def integer_validator(self, name, value):
         """Validates value
-        
+
         Args:
             name (str): Name of param
             value (int): Param to look at
@@ -20,6 +20,6 @@ class BaseGeometry():
             ValueError: if value is <= 0
         """
         if type(value) != int:
-            raise TypeError(name + " must be an integer")
+            raise TypeError(str(name) + " must be an integer")
         if value <= 0:
-            raise ValueError(name + " must be greater than 0")
+            raise ValueError(str(name) + " must be greater than 0")
