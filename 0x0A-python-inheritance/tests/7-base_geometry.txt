@@ -26,6 +26,15 @@ Using
     TypeError: width must be an integer
 
 ::
+
+::
+
+    >>> bg.integer_validator("height", "width")
+    Traceback (most recent call last):
+    TypeError: height must be an integer
+
+::
+
     >>> bg.integer_validator("width", True)
     Traceback (most recent call last):
     TypeError: width must be an integer
@@ -43,6 +52,31 @@ Using
 ::
 
     >>> bg.integer_validator("width", [1, 2])
+    Traceback (most recent call last):
+    TypeError: width must be an integer
+
+::
+
+::
+
+    >>> bg.integer_validator("width", (1, 2))
+    Traceback (most recent call last):
+    TypeError: width must be an integer
+
+::
+
+::
+
+    >>> bg.integer_validator("width", {'name': 'Doe'})
+    Traceback (most recent call last):
+    TypeError: width must be an integer
+
+::
+
+
+::
+
+    >>> bg.integer_validator("width", 7.5)
     Traceback (most recent call last):
     TypeError: width must be an integer
 
