@@ -3,7 +3,7 @@
 
 
 def add_attribute(obj, atr, val):
-    """"""
+    """Set attribute if it is possible"""
     if hasattr(obj, '__dict__'):
         setattr(obj, atr, val)
     else:
