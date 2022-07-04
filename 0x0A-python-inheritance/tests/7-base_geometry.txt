@@ -84,6 +84,14 @@ Using
 
 ::
 
+    >>> bg.integer_validator("NaN", float('nan'))
+    Traceback (most recent call last):
+    TypeError: NaN must be an integer
+
+::
+
+::
+
     >>> bg.integer_validator("width", None)
     Traceback (most recent call last):
     TypeError: width must be an integer
