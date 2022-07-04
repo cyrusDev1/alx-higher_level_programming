@@ -144,3 +144,11 @@ Using
     'value'
 
 ::
+
+::
+
+    >>> bg = BaseGeometry()
+    >>> bg.integer_validator("hi", 5, True)
+    Traceback (most recent call last):
+    TypeError: integer_validator() takes 3 positional arguments but 4 were given
+
