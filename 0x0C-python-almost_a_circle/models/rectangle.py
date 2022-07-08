@@ -67,3 +67,50 @@ class Rectangle(Base):
         if y < 0:
             raise ValueError("y must be >= 0")
         self.__y = y
+
+    def area(self):
+        """Returns the area value of the Rectangle instance."""
+        return (self.__width * self.__height)
+
+    def display(self):
+        """Prints in stdout the Rectangle instance with the character #"""
+        for y in range(self.__y):
+            print("")
+        for i in range(self.__height):
+            for x in range(self.__x):
+                print(" ", end="")
+            for j in range(self.__width):
+                print("#", end="")
+            print()
+
+    def __str__(self):
+        """Prints description of a rectangle"""
+        return ("[{}] ({}) {}/{} - {}/{}".format(self.__class__.__name__,
+                self.id, self.__x, self.__y, self.__width, self.__height))
+
+    def update(self, *args, **kwargs):
+        """Update attributs of a class"""
+        if args and len(args) != 0:
+            for i, v in enumerate(args):
+                if i == 0:
+                    super().__init__(v)
+                elif i == 1:
+                    self.width = v
+                elif i == 2:
+                    self.height = v
+                elif i == 3:
+                    self.x = v
+                elif i == 4:
+                    self.y = v
+        elif kwargs and len(kwargs) != 0:
+            for k, v in kwargs.items():
+                if k == "id":
+                    super().__init__(v)
+                elif k == "width":
+                    self.width = v
+                elif k == "height":
+                    self.height = v
+                elif k == "x":
+                    self.x = v
+                elif k == "y":
+                    self.y = v
