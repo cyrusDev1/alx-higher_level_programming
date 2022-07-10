@@ -2,7 +2,6 @@
 """Defines Base class"""
 
 
-from email import header
 import json
 import os
 import csv
