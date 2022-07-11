@@ -19,11 +19,12 @@ class Square(Rectangle):
 
     @property
     def size(self):
-        """Get or Set size of square"""
+        """Get size of square"""
         return self.width
 
     @size.setter
     def size(self, size):
+        """Set size of square"""
         self.width = size
 
     def update(self, *args, **kwargs):
@@ -50,4 +51,5 @@ class Square(Rectangle):
                     self.y = v
 
     def to_dictionary(self):
+        """convert instance in dict"""
         return {'id': self.id, 'size': self.size, 'x': self.x, 'y': self.y}
