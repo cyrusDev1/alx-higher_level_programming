@@ -2,7 +2,6 @@
 """Defines Rectangle class"""
 
 
-from tkinter.messagebox import NO
 from models.base import Base
 
 
@@ -19,11 +18,12 @@ class Rectangle(Base):
 
     @property
     def width(self):
-        """Set or get width"""
+        """Get width"""
         return self.__width
 
     @width.setter
     def width(self, width):
+        """Set width"""
         if type(width) != int:
             raise TypeError("width must be an integer")
         if width <= 0:
@@ -32,11 +32,12 @@ class Rectangle(Base):
 
     @property
     def height(self):
-        """Set or get height"""
+        """Get height"""
         return self.__height
 
     @height.setter
     def height(self, height):
+        """Set height"""
         if type(height) != int:
             raise TypeError("height must be an integer")
         if height <= 0:
@@ -45,11 +46,12 @@ class Rectangle(Base):
 
     @property
     def x(self):
-        """Set or get x"""
+        """Get x"""
         return self.__x
 
     @x.setter
     def x(self, x):
+        """Set x"""
         if type(x) != int:
             raise TypeError("x must be an integer")
         if x < 0:
@@ -58,11 +60,12 @@ class Rectangle(Base):
 
     @property
     def y(self):
-        """Set or get y"""
+        """Get y"""
         return self.__y
 
     @y.setter
     def y(self, y):
+        """Get y"""
         if type(y) != int:
             raise TypeError("y must be an integer")
         if y < 0:
@@ -117,5 +120,6 @@ class Rectangle(Base):
                     self.y = v
 
     def to_dictionary(self):
+        """Convert instance to dict"""
         return {'id': self.id, 'width': self.width, 'height': self.height,
                 'x': self.x, 'y': self.y}
