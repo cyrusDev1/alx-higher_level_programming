@@ -65,9 +65,8 @@ class Base():
         if os.path.exists(cls.__name__ + ".json"):
             with open(cls.__name__ + ".json", "r") as f:
                 list_ouput_of_dicts = cls.from_json_string(f.read())
-
-        for dict in list_ouput_of_dicts:
-            ins_list.append(cls.create(**dict))
+            for dict in list_ouput_of_dicts:
+                ins_list.append(cls.create(**dict))
         return ins_list
 
     @classmethod
