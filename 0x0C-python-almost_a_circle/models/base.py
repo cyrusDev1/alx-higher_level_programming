@@ -35,7 +35,8 @@ class Base():
         save = "[]"
         if (list_objs is not None and type(list_objs) == list
                 and list_objs != []):
-            save = cls.to_json_string([instance.to_dictionary() for instance in list_objs])
+            save = cls.to_json_string([
+                instance.to_dictionary() for instance in list_objs])
         with open(cls.__name__ + ".json", "w") as f:
             f.write(save)
 
