@@ -5,6 +5,8 @@
 import json
 import os
 import csv
+import turtle
+import random
 
 
 class Base():
@@ -97,3 +99,45 @@ class Base():
                              for row in reader]
             list_inst = [cls.create(**dict) for dict in list_dict]
         return list_inst
+
+    def draw(list_rectangles, list_squares):
+        """Opens a window and draws all the Rectangles and Squares"""
+        a = turtle.Turtle()
+        turtle.bgcolor("cyan")
+        a.pensize(3)
+        a.shape("turtle")
+        for rect in list_rectangles:
+            a.color("black", "white")
+            a.begin_fill()
+            for i in range(2):
+                a.forward(rect.width)
+                a.left(90)
+                a.forward(rect.height)
+                a.left(90)
+            a.penup()
+            a.goto(rect.width, rect.height)
+            a.pendown()
+            a.end_fill()
+
+        a.left(140)
+        a.penup()
+        a.forward(100)
+        a.pendown()
+        a.right(140)
+        a.left(90)
+        a.shape("circle")
+        a.pensize(3)
+        a.begin_fill()
+        for sqa in list_squares:
+            a.color("white", "green")
+            for i in range(2):
+                a.forward(sqa.size)
+                a.left(90)
+                a.forward(sqa.size)
+                a.left(90)
+            a.left(90)
+            a.penup()
+            a.goto(1, -10*i)
+            a.pendown()
+        a.end_fill()
+        turtle.done()
