@@ -1,155 +1,299 @@
 #!/usr/bin/python3
 
 
+import unittest
+import os
 from models.base import Base
 from models.rectangle import Rectangle
 from models.square import Square
-import unittest
-import contextlib
-import io
 
 
-class TestSquare(unittest.TestCase):
-    """Test class for Square class."""
+class TestBase(unittest.TestCase):
+    """Test class for Base class."""
 
     def setUp(self):
         Base._Base__nb_objects = 0
 
-    def test_10_0(self):
-        """Test Square class: check for attributes."""
+    def test_1_0(self):
+        """Create new instances: check for id."""
 
-        s0 = Square(1)
-        self.assertEqual(s0.id, 1)
-        s1 = Square(5, 3, 4)
-        self.assertEqual(s1.height, 5)
-        self.assertEqual(s1.width, 5)
-        self.assertEqual(s1.x, 3)
-        self.assertEqual(s1.y, 4)
-        self.assertEqual(s1.id, 2)
+        b0 = Base()
+        self.assertEqual(b0.id, 1)
+        b1 = Base()
+        self.assertEqual(b1.id, 2)
+        b2 = Base(12)
+        self.assertEqual(b2.id, 12)
+        b3 = Base(0)
+        self.assertEqual(b3.id, 0)
+        b4 = Base(927)
+        self.assertEqual(b4.id, 927)
+        b5 = Base(-5)
+        self.assertEqual(b5.id, -5)
+        b6 = Base(9)
+        self.assertEqual(b6.id, 9)
 
-    def test_10_1(self):
-        """Test __str__ representation."""
+    def test_1_1(self):
+        """Test for type and instance."""
 
-        s1 = Square(9, 4, 5, 6)
-        self.assertEqual(str(s1), "[Square] (6) 4/5 - 9")
+        b6 = Base()
+        self.assertEqual(type(b6), Base)
+        self.assertTrue(isinstance(b6, Base))
 
-    def test_10_2(self):
-        """Test Square class: check for inheritance."""
+    def test_15_1(self):
+        """Test static method to_json_string with regular dict."""
 
-        s1 = Square(6)
-        self.assertTrue(isinstance(s1, Rectangle))
-        self.assertTrue(issubclass(Square, Rectangle))
-        self.assertFalse(isinstance(Square, Rectangle))
-        self.assertTrue(isinstance(s1, Base))
-        self.assertTrue(issubclass(Square, Base))
-        self.assertFalse(isinstance(Square, Base))
+        d = {'x': 2, 'width': 10, 'id': 1, 'height': 7, 'y': 8}
+        json_d = Base.to_json_string([d])
+        self.assertTrue(isinstance(d, dict))
+        self.assertTrue(isinstance(json_d, str))
+        self.assertCountEqual(
+            json_d, '[{"x": 2, "width": 10, "id": 1, "height": 7, "y": 8}]')
+        json_d_1 = Base.to_json_string([])
+        self.assertEqual(json_d_1, "[]")
+        json_d_2 = Base.to_json_string(None)
+        self.assertEqual(json_d_1, "[]")
 
-    def test_10_3(self):
-        """Test Square class: check for missing args."""
+    def test_15_2(self):
+        """Test static method to_json_string with wrong number of args."""
 
+        s1 = ("to_json_string() missing 1 required positional argument: " +
+              "'list_dictionaries'")
         with self.assertRaises(TypeError) as x:
-            s1 = Square()
+            Base.to_json_string()
+        self.assertEqual(s1, str(x.exception))
+        s2 = "to_json_string() takes 1 positional argument but 2 were given"
+        with self.assertRaises(TypeError) as x:
+            Base.to_json_string([{1, 2}], [{3, 4}])
+        self.assertEqual(s2, str(x.exception))
+
+    def test_16_0(self):
+        """Test class method save_to_file with normal types."""
+
+        r0 = Rectangle(10, 7, 2, 8)
+        r1 = Rectangle(2, 4)
+        Rectangle.save_to_file([r0, r1])
+        res = ('[{"y": 8, "x": 2, "id": 1, "width": 10, "height": 7},' +
+               ' {"y": 0, "x": 0, "id": 2, "width": 2, "height": 4}]')
+        with open("Rectangle.json", "r") as f:
+            self.assertEqual(len(f.read()), len(res))
+        Rectangle.save_to_file(None)
+        res = "[]"
+        with open("Rectangle.json", "r") as f:
+            self.assertEqual(f.read(), res)
+        os.remove("Rectangle.json")
+        Rectangle.save_to_file([])
+        with open("Rectangle.json", "r") as f:
+            self.assertEqual(f.read(), res)
+        s0 = Square(9, 3, 1, 12)
+        s1 = Square(6, 7)
+        Square.save_to_file([s0, s1])
+        res = ('[{"id": 12, "size": 9, "x": 3, "y": 1},' +
+               ' {"id": 3, "size": 6, "x": 7, "y": 0}]')
+        with open("Square.json", "r") as f:
+            self.assertEqual(len(f.read()), len(res))
+        Square.save_to_file(None)
+        res = "[]"
+        with open("Square.json", "r") as f:
+            self.assertEqual(f.read(), res)
+        os.remove("Square.json")
+        Square.save_to_file([])
+        with open("Square.json", "r") as f:
+            self.assertEqual(f.read(), res)
+
+    def test_16_1(self):
+        """Test class method save_to_file with errors."""
+
+        with self.assertRaises(AttributeError) as x:
+            Base.save_to_file([Base(9), Base(5)])
         self.assertEqual(
-            "__init__() missing 1 required positional argument: 'size'", str(
+            "'Base' object has no attribute 'to_dictionary'", str(
+                x.exception))
+        with self.assertRaises(AttributeError) as x:
+            Rectangle.save_to_file([3, 4])
+        self.assertEqual(
+            "'int' object has no attribute 'to_dictionary'", str(
                 x.exception))
 
-    def test_10_4(self):
-        """Test Square for methods inherited from Rectangle."""
+    def test_16_2(self):
+        """Test class method save_to_file with wrong args."""
 
-        s1 = Square(9)
-        self.assertEqual(s1.area(), 81)
-        s2 = Square(4, 1, 2, 5)
-        s2.update(7)
-        self.assertEqual(s2.id, 7)
-        f = io.StringIO()
-        s3 = Square(4)
-        with contextlib.redirect_stdout(f):
-            s3.display()
-        s = f.getvalue()
-        res = "####\n####\n####\n####\n"
-        self.assertEqual(s, res)
-
-    def test_11_0(self):
-        """Test Square class: check for size attribute."""
-
-        s1 = Square(8)
-        self.assertEqual(s1.size, 8)
-        s2 = Square(9, 8, 7, 2)
-        self.assertEqual(s2.size, 9)
-
-    def test_11_1(self):
-        """Test Square class: check for wrong attributes."""
-
+        s1 = ("save_to_file() missing 1 required" +
+              " positional argument: 'list_objs'")
         with self.assertRaises(TypeError) as x:
-            s = Square("Hello", 2)
-        self.assertEqual("width must be an integer", str(x.exception))
+            Rectangle.save_to_file()
+        self.assertEqual(s1, str(x.exception))
+        s2 = ("save_to_file() takes 2 positional" +
+              " arguments but 3 were given")
         with self.assertRaises(TypeError) as x:
-            s = Square(2, "World")
-        self.assertEqual("x must be an integer", str(x.exception))
+            Rectangle.save_to_file([Rectangle(9, 4), Rectangle(8, 9)], 98)
+        self.assertEqual(s2, str(x.exception))
+
+    def test_17_0(self):
+        """Test static method from_json_string with normal types."""
+
+        list_input = [
+            {'id': 89, 'width': 10, 'height': 4},
+            {'id': 7, 'width': 1, 'height': 7}
+        ]
+        json_list_input = Rectangle.to_json_string(list_input)
+        list_output = Rectangle.from_json_string(json_list_input)
+        res = [{'width': 10, 'height': 4, 'id': 89},
+               {'width': 1, 'height': 7, 'id': 7}]
+        self.assertCountEqual(list_output, res)
+        self.assertEqual(type(list_output), list)
+
+        list_output_1 = Rectangle.from_json_string('')
+        self.assertEqual(list_output_1, [])
+
+        list_output_2 = Rectangle.from_json_string(None)
+        self.assertEqual(list_output_2, [])
+
+    def test_17(self):
+        """Test static method from_json_string with wrong args."""
+
+        s1 = ("from_json_string() missing 1" +
+              " required positional argument: 'json_string'")
         with self.assertRaises(TypeError) as x:
-            s = Square(1, 2, "Foo", 3)
-        self.assertEqual("y must be an integer", str(x.exception))
-        with self.assertRaises(ValueError) as x:
-            s = Square(0, 2)
-        self.assertEqual("width must be > 0", str(x.exception))
-        with self.assertRaises(ValueError) as x:
-            s = Square(-1)
-        self.assertEqual("width must be > 0", str(x.exception))
-        with self.assertRaises(ValueError) as x:
-            s = Square(2, -3)
-        self.assertEqual("x must be >= 0", str(x.exception))
-        with self.assertRaises(ValueError) as x:
-            s = Square(2, 5, -5, 6)
-        self.assertEqual("y must be >= 0", str(x.exception))
-
-    def test_12_0(self):
-        """Test update method on Square."""
-
-        s1 = Square(5)
-        s1.update(10)
-        self.assertEqual(s1.id, 10)
-        s1.update(x=12)
-        self.assertEqual(s1.x, 12)
-        s1.update(size=7, id=89, y=1)
-        self.assertEqual(s1.size, 7)
-        self.assertEqual(s1.id, 89)
-        self.assertEqual(s1.y, 1)
-        s1.update()
-        self.assertEqual(s1.size, 7)
-        self.assertEqual(s1.id, 89)
-        self.assertEqual(s1.y, 1)
-
-    def test_12_1(self):
-        """Test for update method on Square with wrong types."""
-
-        s1 = Square(9)
+            Rectangle.from_json_string()
+        self.assertEqual(s1, str(x.exception))
+        s2 = "from_json_string() takes 1 positional argument but 2 were given"
         with self.assertRaises(TypeError) as x:
-            s1.update(2, 3, 4, "hello")
-        self.assertEqual("y must be an integer", str(x.exception))
+            Rectangle.from_json_string("Hi", 98)
+        self.assertEqual(s2, str(x.exception))
 
-    def test_14_0(self):
-        """Test for public method to_dictionary."""
+    def test_18_0(self):
+        """Test class method create with normal types."""
 
-        s1 = Square(10, 2, 1)
+        r1 = Rectangle(3, 5, 1)
+        r1_dictionary = r1.to_dictionary()
+        r2 = Rectangle.create(**r1_dictionary)
+        self.assertEqual(str(r1), str(r2))
+        self.assertFalse(r1 is r2)
+        self.assertFalse(r1 == r2)
+        s1 = Square(3, 5)
         s1_dictionary = s1.to_dictionary()
-        s_dictionary = {'x': 2, 'y': 1, 'id': 1, 'size': 10}
-        self.assertEqual(len(s1_dictionary), len(s_dictionary))
-        self.assertEqual(type(s1_dictionary), dict)
-        s2 = Square(1, 1)
-        s2.update(**s1_dictionary)
-        s2_dictionary = s2.to_dictionary()
-        self.assertEqual(len(s1_dictionary), len(s2_dictionary))
-        self.assertEqual(type(s2_dictionary), dict)
+        s2 = Square.create(**s1_dictionary)
+        self.assertEqual(str(s1), str(s2))
+        self.assertFalse(s1 is s2)
         self.assertFalse(s1 == s2)
 
-    def test_14_1(self):
-        """Test for public method to_dictionary with wrong args."""
-        s = "to_dictionary() takes 1 positional argument but 2 were given"
+    def test_18_1(self):
+        """Test class method create with wrong types."""
+
         with self.assertRaises(TypeError) as x:
-            s1 = Square(10, 2, 1, 9)
-            s1_dictionary = s1.to_dictionary("Hi")
+            r1 = "Hello"
+            r2 = Rectangle.create(r1)
+        self.assertEqual(
+            "create() takes 1 positional argument but 2 were given", str(
+                x.exception))
+
+    def test_19_0(self):
+        """Test class method load_from_file with normal types."""
+
+        r1 = Rectangle(10, 7, 2, 8)
+        r2 = Rectangle(2, 4)
+        list_rectangles_input = [r1, r2]
+        Rectangle.save_to_file(list_rectangles_input)
+        list_rectangles_output = Rectangle.load_from_file()
+        for x in zip(list_rectangles_input, list_rectangles_output):
+            self.assertEqual(str(x[0]), str(x[1]))
+
+        s1 = Square(10, 2)
+        s2 = Square(9)
+        list_squares_input = [s1, s2]
+        Square.save_to_file(list_squares_input)
+        list_squares_output = Square.load_from_file()
+        for x in zip(list_squares_input, list_squares_output):
+            self.assertEqual(str(x[0]), str(x[1]))
+
+    def test_19_1(self):
+        """Test class method load_from_file with missing files."""
+
+        if os.path.exists("Rectangle.json"):
+            os.remove("Rectangle.json")
+        if os.path.exists("Square.json"):
+            os.remove("Square.json")
+        if os.path.exists("Base.json"):
+            os.remove("Base.json")
+        list_rectangles_output = Rectangle.load_from_file()
+        self.assertEqual(list_rectangles_output, [])
+        list_squares_output = Square.load_from_file()
+        self.assertEqual(list_squares_output, [])
+
+    def test_19_2(self):
+        """Test class method load_from_file with wrong args."""
+
+        s = "load_from_file() takes 1 positional argument but 2 were given"
+        with self.assertRaises(TypeError) as x:
+            list_rectangles_output = Rectangle.load_from_file("Hello")
+        self.assertEqual(s, str(x.exception))
+
+    def test_20_0(self):
+        """Test class method save_to_file_csv with normal types."""
+
+        r0 = Rectangle(10, 7, 2, 8)
+        r1 = Rectangle(2, 4)
+        Rectangle.save_to_file_csv([r0, r1])
+        res = "1,10,7,2,8\n2,2,4,0,0\n"
+        with open("Rectangle.csv", "r") as f:
+            self.assertEqual(len(f.read()), len(res))
+        s0 = Square(9, 3, 1, 12)
+        s1 = Square(6, 7)
+        Square.save_to_file_csv([s0, s1])
+        res = "12,9,3,1\n3,6,7,0\n"
+        with open("Square.csv", "r") as f:
+            self.assertEqual(len(f.read()), len(res))
+
+    def test_20_1(self):
+        """Test class method save_to_file_csv with wrong args."""
+
+        s1 = ("save_to_file_csv() missing 1 required" +
+              " positional argument: 'list_objs'")
+        with self.assertRaises(TypeError) as x:
+            Rectangle.save_to_file_csv()
+        self.assertEqual(s1, str(x.exception))
+        s2 = "save_to_file_csv() takes 2 positional arguments but 3 were given"
+        with self.assertRaises(TypeError) as x:
+            Rectangle.save_to_file_csv([Rectangle(9, 4), Rectangle(8, 9)], 98)
+        self.assertEqual(s2, str(x.exception))
+
+    def test_20_3(self):
+        """Test class method load_from_file_csv with normal types."""
+
+        r1 = Rectangle(10, 7, 2, 8)
+        r2 = Rectangle(2, 4)
+        list_rectangles_input = [r1, r2]
+        Rectangle.save_to_file_csv(list_rectangles_input)
+        list_rectangles_output = Rectangle.load_from_file_csv()
+        for x in zip(list_rectangles_input, list_rectangles_output):
+            self.assertEqual(str(x[0]), str(x[1]))
+
+        s1 = Square(10, 2)
+        s2 = Square(9)
+        list_squares_input = [s1, s2]
+        Square.save_to_file_csv(list_squares_input)
+        list_squares_output = Square.load_from_file_csv()
+        for x in zip(list_squares_input, list_squares_output):
+            self.assertEqual(str(x[0]), str(x[1]))
+
+    def test_20_4(self):
+        """Test class method load_from_file_csv with missing files."""
+
+        os.remove("Rectangle.csv")
+        os.remove("Square.csv")
+        list_rectangles_output = Rectangle.load_from_file_csv()
+        self.assertEqual(list_rectangles_output, [])
+        list_squares_output = Square.load_from_file_csv()
+        self.assertEqual(list_squares_output, [])
+
+    def test_20_5(self):
+        """Test class method load_from_file_csv with wrong args."""
+
+        s = "load_from_file_csv() takes 1 positional argument but 2 were given"
+        with self.assertRaises(TypeError) as x:
+            list_rectangles_output = Rectangle.load_from_file_csv("Hello")
         self.assertEqual(s, str(x.exception))
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
