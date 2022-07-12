@@ -14,6 +14,9 @@ from models.square import Square
 class TestRectangle(unittest.TestCase):
     """Test rectangle class"""
 
+    def setUp(self):
+        Base._Base__nb_objects = 0
+
     def test_2_0(self):
         """Test ID"""
         r1 = Rectangle(10, 2)
@@ -160,7 +163,7 @@ class TestRectangle(unittest.TestCase):
         self.assertEqual(r1.x, 1)
         self.assertEqual(r1.height, 2)
 
-    def test(self):
+    def test_13(self):
         """Test method to_dictionary."""
         r1 = Rectangle(10, 2, 1, 9)
         r1_dictionary = r1.to_dictionary()
