@@ -13,5 +13,5 @@ if (isNaN(parse)) {
   console.log('1');
 } else {
   const fact = factorial(parse);
-  console.log(f);
+  console.log(fact);
 }
