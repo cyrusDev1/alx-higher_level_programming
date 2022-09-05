@@ -5,6 +5,6 @@ if (isNaN(parse)) {
   console.log('Missing size');
 } else {
   for (let i = 0; i < parse; i++) {
-    console.log("X".repeat(parse));
+    console.log('X'.repeat(parse));
   }
 }
