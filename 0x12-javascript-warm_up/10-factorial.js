@@ -3,7 +3,7 @@ const argv = process.argv;
 const parse = parseInt(argv[2], 10);
 
 function factorial (n) {
-  if (n == 1) {
+  if (n === 1) {
     return (1);
   }
   return (n * factorial(n - 1));
