@@ -1,3 +1,3 @@
 #!/usr/bin/node
-let print = 'C is fun\nPython is cool\nJavaScript is amazing';
-console.log(print);
+const multiLang = 'C is fun\nPython is cool\nJavaScript is amazing';
+console.log(multiLang);
