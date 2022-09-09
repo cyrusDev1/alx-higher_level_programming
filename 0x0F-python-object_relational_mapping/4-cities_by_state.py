@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""takes in arguments and displays all values in the states table
-of hbtn_0e_0_usa where name matches the argument. But this time,
-write one that is safe from MySQL injections!"""
+""" lists all cities from the database hbtn_0e_4_usa"""
 import sys
 import MySQLdb
 
@@ -18,7 +16,7 @@ if __name__ == "__main__":
         )
     cursor = db.cursor()
     cursor.execute("""SELECT cities.id, cities.name, states.name FROM
-    hbtn_0e_4_usa.cities LEFT JOIN hbtn_0e_4_usa.states ON
+    cities INNER JOIN states ON
     cities.state_id = states.id ORDER BY states.id ASC""")
 
     rows = cursor.fetchall()
