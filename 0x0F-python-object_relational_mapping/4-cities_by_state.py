@@ -18,7 +18,7 @@ if __name__ == "__main__":
         )
     cursor = db.cursor()
     cursor.execute("""SELECT cities.id, cities.name, states.name FROM
-    hbtn_0e_4_usa.cities INNER JOIN hbtn_0e_4_usa.states ON
+    hbtn_0e_4_usa.cities LEFT JOIN hbtn_0e_4_usa.states ON
     cities.state_id = states.id ORDER BY states.id ASC""")
 
     rows = cursor.fetchall()
