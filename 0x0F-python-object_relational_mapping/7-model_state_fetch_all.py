@@ -4,7 +4,7 @@
 
 import sys
 from model_state import Base, State
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 if __name__ == "__main__":
@@ -14,3 +14,4 @@ if __name__ == "__main__":
     rows = session.query(State).all()
     for row in rows:
         print(f'{row.id}: {row.name}')
+    session.close()
