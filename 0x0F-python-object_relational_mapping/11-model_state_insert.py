@@ -13,7 +13,7 @@ if __name__ == "__main__":
     engine = create_engine('mysql+mysqldb://{}:{}@localhost:3306/{}'.format(
         sys.argv[1], sys.argv[2], sys.argv[3]), pool_pre_ping=True)
     session = Session(bind=engine)
-    new = State(name = "Louisiana")
+    new = State(name="Louisiana")
     session.add(new)
     session.commit()
     print(new.id)
