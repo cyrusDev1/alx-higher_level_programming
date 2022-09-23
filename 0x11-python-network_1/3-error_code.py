@@ -3,7 +3,7 @@
 and displays the body of the response (decoded in utf-8)."""
 import urllib.request
 import sys
-from urllib.error import HTTPError
+import urllib.error
 
 
 if __name__ == "__main__":
