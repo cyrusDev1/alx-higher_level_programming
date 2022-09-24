@@ -14,4 +14,4 @@ if __name__ == "__main__":
     for i in range(0, 10):
         sha = commits[i].get('sha')
         name = commits[i].get('commit').get('author').get('name')
-        print("{} {}".format(sha, name))
+        print("{}: {}".format(sha, name))
