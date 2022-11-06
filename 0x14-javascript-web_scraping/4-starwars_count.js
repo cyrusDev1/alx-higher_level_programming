@@ -3,7 +3,7 @@ const request = require('request');
 const url = 'https://swapi-api.hbtn.io/api/people/18/';
 request(url, (err, response, body) => {
   if (!err) {
-    data = JSON.parse(body);
+    const data = JSON.parse(body);
     console.log(data.films.length);
   }
 });
