@@ -8,7 +8,7 @@ const endpoint = `${url}${id}`;
 request(endpoint, (err, response, body) => {
   if (!err) {
     const data = JSON.parse(body);
-    characters = data.characters;
+    const characters = data.characters;
     characters.forEach(url => {
       request(url, (err, response, body) => {
         if (!err) {
